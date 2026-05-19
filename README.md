@@ -107,11 +107,14 @@ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-11000
 <img width="788" height="375" alt="9" src="https://github.com/user-attachments/assets/ac15031a-c0bb-4109-9514-67baf6319fbf" />
 
 <br>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; ffuf discovered web1337.inlanefreight.htb as a valid virtual host. Before visiting the subdomain in Firefox, we need to add the subdomain in /etc/hosts as we did for inlanefreight.htb.
+<br>
 <br>
 
 <img width="255" height="194" alt="7" src="https://github.com/user-attachments/assets/ffaeaa01-2a2c-479f-b765-498afb49f5ba" />
 
+<br>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp; Now, we can visit the subdomain in Firefox.
 <br>
@@ -124,7 +127,9 @@ http://web1337.inlanefreight.htb:30886
 <img width="483" height="248" alt="8" src="https://github.com/user-attachments/assets/ba944404-bb62-43d0-bd2b-60e8484778bf" />
 
 <br>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; We did not get any information from the subdomain also. Let's Brute force again by ffuf to identify there is any hidden directory or file are present in subdomain.
+<br>
 <br>
 
 ```bash
@@ -134,7 +139,9 @@ ffuf -w /usr/share/wordlists/dird/common.txt -u 'http://web1337.inlanefreight.ht
 <img width="788" height="375" alt="9" src="https://github.com/user-attachments/assets/cb92f329-642a-465d-86ce-6c8c41228933" />
 
 <br>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; We have discover robots.txt file was present in the subdomain. Let's navigat to robots.txt
+<br>
 <br>
 
 ```bash
@@ -144,7 +151,9 @@ http://web1337.inlanefreight.htb:30886/robots.txt
 <img width="478" height="230" alt="10" src="https://github.com/user-attachments/assets/17632022-0926-4b4e-a92d-8bcba4fbfb40" />
 
 <br>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; The robots.txt file revealed a disallowed path: /admin_h1dd3n. Let's navigat to it
+<br>
 <br>
 
 ```bash
@@ -154,7 +163,9 @@ http://web1337.inlanefreight.htb:30886/admin_h1dd3n/
 <img width="480" height="245" alt="11" src="https://github.com/user-attachments/assets/b45de6d9-6a4e-4bbb-9c3f-5837557529e6" />
 
 <br>
+<br>
 &nbsp;&nbsp;&nbsp;&nbsp; The page displayed a message stating the admin panel was under maintenance but that the API was still accessible along with its key in plain text.
+<br>
 <br>
 
 <h4 align =center>Third goal is completed</h4>
@@ -208,5 +219,11 @@ cat results.json
 &nbsp;&nbsp;&nbsp;&nbsp; The results.json output revealed an email address 1337testing@inlanefreight.htb and an HTML comment left by a developer saying "Remember to change the API key to ba988b835be4aa97d068941dc852ff33".
 <br>
 
+---
+***Summary:***
+
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Starting with just an IP address and a domain name, this lab walked through what a real web reconnaissance process actually looks like in practice. It began simply — a WHOIS lookup to see who owned the domain, a quick nmap scan to confirm what was running, and a visit to the site in the browser which showed nothing interesting. But that blank page was actually the first clue. Real content was hiding on subdomains, and ffuf found the first one — web1337. From there, a quick check of robots.txt handed over the location of a hidden admin directory that had no password, no login, nothing protecting it — just an API key sitting in plain text on the screen. Not satisfied with just that, we ran ffuf again and found a dev subdomain sitting quietly in the background. Throwing ReconSpider at it pulled out an email address and a developer note buried in an HTML comment that was never meant to be seen — except it was.
+<br>
 <h4 align =center> fourth and fifth goals are completed </h4>
 
